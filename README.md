@@ -22,7 +22,7 @@
 ## Installing tempo
 
 ```bash
-helm install loki grafana/loki --values tempo-values.yml  --version 6.29.0 --namespace monitoring
+helm install loki grafana/tempo --values tempo-values.yml  --version 6.29.0 --namespace monitoring
 
 ```
 
