@@ -19,5 +19,41 @@
 - Prometheus Helm Repository: https://prometheus-community.github.io/helm-charts
 - Prometheus values.yaml: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 
-- kubectl installed and configured ([https://youtu.be/IBkU4dghY0Y](https://youtu.be/IBkU4dghY0Y))
-- Helm installed: ([https://kubernetestraining.io/blog/installing-helm-on-mac-and-windows](https://kubernetestraining.io/blog/installing-helm-on-mac-and-windows))
+## Installing tempo
+
+```bash
+helm install loki grafana/loki --values tempo-values.yml  --version 6.29.0 --namespace monitoring
+
+```
+
+## Installing kube-prometheus-stack
+
+Installing kube-prometheus-stack if custom-values.yaml file isn't present. This adds loki as an additional data source.
+
+```bash
+helm install prometheus prometheus-community/kube-prometheus-stack --version 45.7.1 \
+  --namespace monitoring \
+  --values prometheus-stack-values.yml
+```
+
+### Testing Prometheus
+
+port-forward
+
+```bash
+kubectl port-forward -n monitoring svc/prometheus-operated 9090:9090
+```
+
+### Testing Grafana
+
+Access grafana password
+
+```bash
+kubectl get secret -n monitoring prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+
+port-forward
+
+```bash
+kubectl port-forward -n monitoring svc/grafana 3000:80
+```
